@@ -20,7 +20,12 @@ onMounted(() => {
     guitarras.value = db
     guitarra.value = db[3]
     // state.guitarras = db
+    const carritoStorage = localStorage.getItem()
 });
+
+const guardarLocalStorage = () => {
+    localStorage.setItem('carrito', JSON.stringify(carrito.value))
+}
 
 const agregarCarrito = (guitarra) => {
     // Comprobar si un elemento existe en el carrito:
