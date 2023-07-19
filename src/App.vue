@@ -12,11 +12,13 @@ import { db } from './data/guitarras'
 
 const guitarras = ref([]);
 const carrito = ref([])
+const guitarra = ref({})
 
 
 // Componente de ciclo de vida
 onMounted(() => {
     guitarras.value = db
+    guitarra.value = db[3]
     // state.guitarras = db
 });
 
@@ -30,12 +32,31 @@ const agregarCarrito = (guitarra) => {
         carrito.value.push(guitarra)
     }
 };
+
+const decrementarCantidad = (id) => {
+    const index = carrito.value.findIndex(producto => producto.id === id)
+    if (carrito.value[index].cantidad <= 1) return
+    carrito.value[index].cantidad--
+}
+
+const incrementarCantidad = (id) => {
+    const index = carrito.value.findIndex(producto => producto.id === id)
+    if (carrito.value[index].cantidad >= 5) return
+    carrito.value[index].cantidad++
+
+}
+
+const eliminarProducto = (id) => {
+    carrito.value = carrito.value.filter(producto => producto.id !== id)
+}
+
+const vaciarCarrito = (guitarra) => {
+    carrito.value = []
+}
 </script>
 
 <template>
-    <Header 
-        :carrito="carrito"    
-    />
+    <Header :carrito="carrito" :guitarra="guitarra" @agregar-carrito="agregarCarrito" @decrementar-cantidad="decrementarCantidad" @incrementar-cantidad="incrementarCantidad" @eliminar-producto="eliminarProducto" @vaciar-carrito="vaciarCarrito"/>
     <main class="container-xl mt-5">
         <h2 class="text-center">Nuestra Colección</h2>
         <div class="row mt-5">
