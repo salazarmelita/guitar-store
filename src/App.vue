@@ -1,4 +1,13 @@
+<!-- Sólo agregando <script> ya se está trabajando con Composition API -->
 <script setup>
+    import {ref, reactive} from 'vue'
+
+     const state = reactive({
+        guitarras: [1, 2, 3]
+     }) 
+
+     console.log(state.guitarras)
+
 
 </script>
 
