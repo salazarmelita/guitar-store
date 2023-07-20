@@ -1,6 +1,6 @@
 <!-- Sólo agregando <script> ya se está trabajando con Composition API -->
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Guitarra from './components/Guitarra.vue';
@@ -20,8 +20,17 @@ onMounted(() => {
     guitarras.value = db
     guitarra.value = db[3]
     // state.guitarras = db
-    const carritoStorage = localStorage.getItem()
+    const carritoStorage = localStorage.getItem('carrito')
+    if(carritoStorage) {
+        carrito.value = JSON.parse(carritoStorage)
+    }
 });
+
+watch(carrito, ()=>{
+    guardarLocalStorage();
+}, {
+    deep: true
+})
 
 const guardarLocalStorage = () => {
     localStorage.setItem('carrito', JSON.stringify(carrito.value))
@@ -48,7 +57,6 @@ const incrementarCantidad = (id) => {
     const index = carrito.value.findIndex(producto => producto.id === id)
     if (carrito.value[index].cantidad >= 5) return
     carrito.value[index].cantidad++
-
 }
 
 const eliminarProducto = (id) => {
